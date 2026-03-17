@@ -18,7 +18,9 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 8200
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget -qO- http://localhost:8200/health || exit 1
+RUN apk add --no-cache curl
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD curl -f http://localhost:8200/health || exit 1
 
 CMD ["node", "dist/server.js"]
